@@ -1,0 +1,112 @@
+/*----------------------------------------------------------------------------------------------------------*/
+
+CREATE TABLE Payout_Amount(
+	staff_designation varchar(20) PRIMARY KEY,
+	staff_salary int NOT NULL
+)
+
+CREATE TABLE Service_Region(
+	service_name varchar(20) PRIMARY KEY NOT NULL,
+	region_no int NOT NULL,
+)
+
+CREATE TABLE Staff_info(
+	staff_id int IDENTITY(1,1) PRIMARY KEY,
+	staff_name varchar(50) NOT NULL,
+	staff_phone int NOT NULL,
+	staff_gender varchar(10) NOT NULL CHECK (staff_gender IN('Male','Female','Other')),
+	staff_age int NOT NULL,
+	staff_address varchar(50) NOT NULL,
+	staff_designation varchar(20) NOT NULL FOREIGN KEY REFERENCES Payout_Amount(staff_designation),
+	staff_salary int NOT NULL,
+	staff_hiredate varchar(20) NOT NULL,
+	region_no varchar(10) NOT NULL
+)
+
+CREATE TABLE Visitor_Info(
+	visitor_id int  IDENTITY(1,1) PRIMARY KEY,
+	visitor_name varchar(50) NOT NULL,
+	visitor_phone varchar(20) NOT NULL,
+	visitor_gender varchar(10) NOT NULL CHECK (visitor_gender IN('Male','Female','Other')),
+	visitor_age int NOT NULL 
+)
+
+CREATE TABLE Parking_Info(
+	license_no varchar(10) PRIMARY KEY NOT NULL,
+	vehicle_type varchar(20) NOT NULL,
+	time_of_parking varchar(20) NOT NULL,
+	garage_section_no varchar(10) NOT NULL
+)
+
+CREATE TABLE Visitor_Vehicle(
+	visitor_id int PRIMARY KEY NOT NULL,
+	license_no varchar(10) NOT NULL FOREIGN KEY REFERENCES Parking_Info(license_no),
+)
+
+CREATE TABLE Ride_info(
+	ride_id int IDENTITY(1,1) PRIMARY KEY,
+	ride_name varchar(20) NOT NULL,
+	region_no int NOT NULL,
+	ticket_price int NOT NULL,
+	age_limit int NOT NULL
+)
+
+CREATE TABLE Food_Info(
+	food_id INT IDENTITY(1,1) PRIMARY KEY,
+	food_name varchar(30) NOT NULL,
+	food_price int NOT NULL,
+) 
+
+CREATE TABLE Entry_Ticket_type (
+	eticket_type varchar(20) PRIMARY KEY NOT NULL,
+	eticket_price int NOT NULL
+)
+
+CREATE TABLE Food_Counter(
+	order_sl_no INT IDENTITY(1,1) PRIMARY KEY,
+	visitor_id int NOT NULL FOREIGN KEY REFERENCES Visitor_Info(visitor_id),
+	food_id int NOT NULL FOREIGN KEY REFERENCES Food_Info(food_id),
+	no_of_food int NOT NULL,
+	food_sold_date varchar(20) NOT NULL
+) 
+
+
+CREATE TABLE Entry_Ticket_counter (
+	eticket_sl_no INT IDENTITY(1,1) PRIMARY KEY,
+	visitor_id int NOT NULL FOREIGN KEY REFERENCES Visitor_Info(visitor_id),
+	no_of_tickets int NOT NULL,
+	eticket_type varchar(30) NOT NULL,
+	eticket_sold_time varchar(20) NOT NULL
+)
+
+CREATE TABLE Ride_Ticket_counter (
+	rticket_sl_no int IDENTITY(1,1) PRIMARY KEY,
+	visitor_id int NOT NULL FOREIGN KEY REFERENCES Visitor_Info(visitor_id),
+	ride_id int  NOT NULL FOREIGN KEY REFERENCES Ride_info(ride_id),
+	no_of_tickets int NOT NULL,
+	eticket_sold_time varchar(20) NOT NULL
+)
+
+CREATE TABLE Feedback(
+	feedback_sl_no int IDENTITY(1,1) PRIMARY KEY,
+	visitor_id int NOT NULL FOREIGN KEY REFERENCES Visitor_Info(visitor_id),
+	feedback_time varchar(20) NOT NULL,
+	visitor_rating int NOT NULL
+	comments varchar(100)
+)
+
+
+
+SELECT * FROM Payout_Amount
+SELECT * FROM Service_Region
+SELECT * FROM Staff_info
+SELECT * FROM Visitor_Info
+SELECT * FROM Parking_Info
+SELECT * FROM Visitor_Vehicle
+SELECT * FROM Ride_info
+SELECT * FROM Food_Info
+SELECT * FROM Entry_Ticket_type
+SELECT * FROM Food_Counter
+SELECT * FROM Entry_Ticket_counter
+SELECT * FROM Ride_Ticket_counter
+SELECT * FROM Feedback
